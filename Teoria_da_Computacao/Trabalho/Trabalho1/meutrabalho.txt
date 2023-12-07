@@ -1,18 +1,32 @@
 Um texto sucinto descrevendo:
+
 a) os recursos que você acrescentou na linguagem;
 
-Foi acrescentado a variação ponto flutuante (\.[0-9]+) em number = #"[0-9]+(\.[0-9]+)?" para representar números de ponto flutuante, 
-  
+Para leitura da lista de parametros foi necessario criar as regras de produção param_list = ident {<","> ident} . e arg_list = expression {<","> expression} .
+Para o statement aceitar agora a lista de parametros precisou passar a notação do call em "call" ident [<"(">[arg_list]<")">]
+
+a regra de produção number precisou ser alterada para receber float: number = #"[0-9]+(\.[0-9]+)?". 
 
 
 b) as alterações e/ou acréscimos que você teve que fazer na gramática para acomodar essas recursos;
 
+Para os parametros:
+Foi acrescentado a regra de produção param_list = ident {<","> ident} . para aceitar lista de parametros
 
+Para a nova caracteristica:
+Foi acrescentado no bnf a variação ponto flutuante (\.[0-9]+) em number = #"[0-9]+(\.[0-9]+)?" para representar números de ponto flutuante, 
 
 c) as alterações e/ou acréscimos que você teve que fazer no código Clojure para que o interpretador
 funcionasse com a sua versão da linguagem.
 
+Foi necessario alterar as funções def name, exec-sttmt, exec-decl, para permitir passar para o ambiente o params. 
+A get-proc-paramns e exec-proc-params foram acrescentadas para lidar com params ao pegar as variaveis do bloco e enviar para o ambiente e
+acrescentar ao ambiente. 
+
+O parser foi alterado em exec-const-decl, exec-sttmt e eval-factor para permitir o float. 
+
  
+
 
 
 

@@ -163,7 +163,7 @@
   (match [inits]
     [[]] env
     [[[:ident name] "=" [:number num] & inits1]]
-    ; Alteração do parser para ler float
+    ; Alteração do parser para ler float no ambiente
     (->> (Float/parseFloat num)
            (def-const env name)
            (recur inits1))))
@@ -194,7 +194,7 @@
   (let [params (get-proc-params env proc expr)
         env-proc (reduce (fn [env-acc [name [type value]]]
                            ;;com o valor retornado de get-proc-params é feito uma verificação do tipo do valor 
-                           ;;para depois salvar a definição de acordo no novo env
+                           ;;para depois salvar a definição no novo env
                            (match [type]
                              [:ident] (def-name env-acc name :var value)
                              [:number] (def-name env-acc name :const value)))
