@@ -1,0 +1,18 @@
+
+
+//nao funcionou
+//pode testar na multiplicação e usar um numero float
+
+const pi = 3.14159;
+  
+var radius, circumference;
+
+procedure calculate_circumference;
+begin
+  circumference := 2.0 * pi * radius;
+end.
+
+begin
+  call calculate_circumference;
+  !circumference.
+end.

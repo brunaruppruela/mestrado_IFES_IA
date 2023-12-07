@@ -1,0 +1,17 @@
+procedure func(x,y);
+begin
+	!x;
+	!y
+end;
+
+procedure func2;
+begin
+	!4
+end;
+
+begin
+	call func(3,4);
+	call func2
+    
+end
+.

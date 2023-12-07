@@ -1,0 +1,44 @@
+<program> = block <"."> .
+
+block = [ const_decl ]
+        [ var_decl ]
+        { proc_decl }
+        statement .
+
+const_decl = <"const"> ident "=" float {<","> ident "=" float} <";"> .
+
+var_decl = <"var"> ident {<","> ident} <";"> .
+
+proc_decl = <"procedure"> ident [<"("> param_list <")">]<";"> block <";"> .
+
+param_list = ident {<","> ident} .
+
+statement = [ ident ":=" expression
+            | "call" ident <"("> arg_list <")">
+            | "?" ident
+            | "!" expression
+            | "begin" statement { <";"> statement } <"end">
+            | "if" condition <"then"> statement 
+            | "while" condition <"do"> statement
+            ].
+
+arg_list  = expression {<","> expression} .
+
+condition = "odd" expression
+          | expression ("="|"<>"|"#"|"<"|"<="|">"|">=") expression .
+
+expression = term { ("+"|"-") term }.
+expression = <term> ( "+" <term> | "-" <term> )*.
+
+term = <factor> ( "*" <factor> | "/" <factor> )*.
+
+factor = ( "+" <factor> | "-" <factor> | <float> | <ident> | <number> | "(" <expression> ")" ).
+
+ident = #"[A-Za-z_][0-9A-Za-z_]*".
+
+float = #"[0-9]+(\.[0-9]+)?([eE][\+\-]?[0-9]+)?".
+
+
+
+
+

@@ -1,0 +1,20 @@
+Um texto sucinto descrevendo:
+a) os recursos que você acrescentou na linguagem;
+
+Foi acrescentado a variação ponto flutuante (\.[0-9]+) em number = #"[0-9]+(\.[0-9]+)?" para representar números de ponto flutuante, 
+  
+
+
+b) as alterações e/ou acréscimos que você teve que fazer na gramática para acomodar essas recursos;
+
+
+
+c) as alterações e/ou acréscimos que você teve que fazer no código Clojure para que o interpretador
+funcionasse com a sua versão da linguagem.
+
+ 
+
+
+
+
+
