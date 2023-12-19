@@ -1,4 +1,4 @@
-# trabalhonpcompleto
+# trabalhonp
 
 FIXME: description
 
@@ -10,7 +10,7 @@ Download from http://example.com/FIXME.
 
 FIXME: explanation
 
-    $ java -jar trabalhonpcompleto-0.1.0-standalone.jar [args]
+    $ java -jar trabalhonp-0.1.0-standalone.jar [args]
 
 ## Options
 

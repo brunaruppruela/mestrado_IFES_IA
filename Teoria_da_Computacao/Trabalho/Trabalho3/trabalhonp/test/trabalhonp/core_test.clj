@@ -1,6 +1,6 @@
-(ns trabalhonpcompleto.core-test
+(ns trabalhonp.core-test
   (:require [clojure.test :refer :all]
-            [trabalhonpcompleto.core :refer :all]))
+            [trabalhonp.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."
