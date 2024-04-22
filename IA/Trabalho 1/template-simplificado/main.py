@@ -118,7 +118,7 @@ def breadth_first_search(labirinto, inicio, goal, viewer):
     while (len(fronteira) > 0) and (goal_encontrado is None):
 
         # seleciona o no mais antigo para ser expandido
-        no_atual = fronteira.pop()
+        no_atual = fronteira.popleft()
 
         # busca os vizinhos do no
         vizinhos = celulas_vizinhas_livres(no_atual, labirinto)
@@ -148,8 +148,53 @@ def breadth_first_search(labirinto, inicio, goal, viewer):
 
 
 def depth_first_search(labirinto, inicio, goal, viewer):
-    # remova o comando abaixo e coloque o codigo DFS aqui
-    pass
+   # nos gerados e que podem ser expandidos (vermelhos)
+    fronteira = deque()
+    # nos ja expandidos (amarelos)
+    expandidos = set()
+
+    # adiciona o no inicial na fronteira
+    fronteira.append(inicio)
+
+    # variavel para armazenar o goal quando ele for encontrado.
+    goal_encontrado = None
+
+    # Repete enquanto nos nao encontramos o goal e ainda
+    # existem para serem expandidos na fronteira. Se
+    # acabarem os nos da fronteira antes do goal ser encontrado,
+    # entao ele nao eh alcancavel.
+    while (len(fronteira) > 0) and (goal_encontrado is None):
+
+        # seleciona o no mais antigo para ser expandido
+        no_atual = fronteira.pop()
+
+        # busca os vizinhos do no
+        vizinhos = celulas_vizinhas_livres(no_atual, labirinto)
+
+        # para cada vizinho verifica se eh o goal e adiciona na
+        # fronteira se ainda nao foi expandido e nao esta na fronteira
+        for v in vizinhos:
+            if v.y == goal.y and v.x == goal.x:
+                goal_encontrado = v
+                # encerra o loop interno
+                break
+            else:
+                if (not esta_contido(expandidos, v)) and (not esta_contido(fronteira, v)):
+                    fronteira.append(v)
+
+        expandidos.add(no_atual)
+
+        viewer.update(generated=fronteira,
+                      expanded=expandidos)
+        #viewer.pause()
+
+
+    caminho = obtem_caminho(goal_encontrado)
+    custo   = custo_caminho(caminho)
+
+    return caminho, custo, expandidos
+
+
 
 
 def a_star_search(labirinto, inicio, goal, viewer):
@@ -179,13 +224,13 @@ def main():
 
         viewer = MazeViewer(labirinto, INICIO, GOAL,
                             step_time_miliseconds=20, zoom=40)
-
+        
         #----------------------------------------
         # BFS Search
         #----------------------------------------
         viewer._figname = "BFS"
         caminho, custo_total, expandidos = \
-                breadth_first_search(labirinto, INICIO, GOAL, viewer)
+            breadth_first_search(labirinto, INICIO, GOAL, viewer)
 
         if len(caminho) == 0:
             print("Goal é inalcançavel neste labirinto.")
@@ -205,6 +250,26 @@ def main():
         #----------------------------------------
         # DFS Search
         #----------------------------------------
+        viewer._figname = "DFS"
+        caminho, custo_total, expandidos = \
+            depth_first_search(labirinto, INICIO, GOAL, viewer)
+
+        if len(caminho) == 0:
+            print("Goal é inalcançavel neste labirinto.")
+
+        print(
+            f"DFS:"
+            f"\tCusto total do caminho: {custo_total}.\n"
+            f"\tNumero de passos: {len(caminho)-1}.\n"
+            f"\tNumero total de nos expandidos: {len(expandidos)}.\n\n"
+
+        )
+
+        viewer.update(path=caminho)
+        viewer.pause()
+
+
+
 
         #----------------------------------------
         # A-Star Search

@@ -9,7 +9,7 @@ class MazeViewer():
     GENERATED_COLOR = (0, 0, 255)
     PATH_COLOR = (128, 0, 255)
 
-    def __init__(self, labirinto, start, goal, zoom=50, step_time_miliseconds=-1):
+    def __init__(self, labirinto, start, goal, zoom=5, step_time_miliseconds=-1):
         self._labirinto = labirinto
         self._zoom = zoom
         self._step = step_time_miliseconds
