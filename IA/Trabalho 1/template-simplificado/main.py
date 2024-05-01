@@ -13,7 +13,7 @@ def gera_labirinto(n_linhas, n_colunas, inicio, goal):
 
     # adiciona celulas ocupadas em locais aleatorios de
     # forma que 50% do labirinto esteja ocupado
-    numero_de_obstaculos = int(0.50 * n_linhas * n_colunas)
+    numero_de_obstaculos = int(0.40 * n_linhas * n_colunas)
     for _ in range(numero_de_obstaculos):
         linha = random.randint(0, n_linhas-1)
         coluna = random.randint(0, n_colunas-1)
@@ -33,7 +33,7 @@ class Celula:
         self.x = x
         self.anterior = anterior
 
-
+# h_score
 def distancia(celula_1, celula_2):
     dx = celula_1.x - celula_2.x
     dy = celula_1.y - celula_2.y
@@ -136,9 +136,8 @@ def breadth_first_search(labirinto, inicio, goal, viewer):
 
         expandidos.add(no_atual)
 
-        viewer.update(generated=fronteira,
-                      expanded=expandidos)
-        #viewer.pause()
+        viewer.update(generated=fronteira, expanded=expandidos)
+        viewer.pause()
 
 
     caminho = obtem_caminho(goal_encontrado)
@@ -148,7 +147,7 @@ def breadth_first_search(labirinto, inicio, goal, viewer):
 
 
 def depth_first_search(labirinto, inicio, goal, viewer):
-   # nos gerados e que podem ser expandidos (vermelhos)
+    # nos gerados e que podem ser expandidos (vermelhos)
     fronteira = deque()
     # nos ja expandidos (amarelos)
     expandidos = set()
@@ -159,13 +158,10 @@ def depth_first_search(labirinto, inicio, goal, viewer):
     # variavel para armazenar o goal quando ele for encontrado.
     goal_encontrado = None
 
-    # Repete enquanto nos nao encontramos o goal e ainda
-    # existem para serem expandidos na fronteira. Se
-    # acabarem os nos da fronteira antes do goal ser encontrado,
-    # entao ele nao eh alcancavel.
+
     while (len(fronteira) > 0) and (goal_encontrado is None):
 
-        # seleciona o no mais antigo para ser expandido
+        # seleciona o no para ser expandido
         no_atual = fronteira.pop()
 
         # busca os vizinhos do no
@@ -184,9 +180,8 @@ def depth_first_search(labirinto, inicio, goal, viewer):
 
         expandidos.add(no_atual)
 
-        viewer.update(generated=fronteira,
-                      expanded=expandidos)
-        #viewer.pause()
+        viewer.update(generated=fronteira, expanded=expandidos)
+        viewer.pause()
 
 
     caminho = obtem_caminho(goal_encontrado)
@@ -195,14 +190,64 @@ def depth_first_search(labirinto, inicio, goal, viewer):
     return caminho, custo, expandidos
 
 
-
-
 def a_star_search(labirinto, inicio, goal, viewer):
-    # remova o comando abaixo e coloque o codigo A-star aqui
-    pass
+    # Fila prioritaria com (celula, custof)  
+    fronteira = deque([(0, inicio)])
+    
+    # nos ja expandidos (amarelos)
+    expandidos = set()
 
+    # Dicionário para armazenar o custo para chegar a cada nó
+    custo_ate_agora = {inicio: 0}
 
+    # dicionario para armazenar o caminho
+    caminho = {}
 
+    # Acompanhar os nós expandidos
+    expandidos = set()
+
+    # Armazenamento do goal quando encontrado
+    goal_encontrado = None
+
+    while fronteira:
+        # Classifica a fronteira pelo custo
+        fronteira = deque(sorted(fronteira, key=lambda x: x[0]))
+        # Obtem o nó com o menor custo da fronteira
+        _, no_atual = fronteira.popleft()
+
+        # Se econtrar o destino pausa o loop
+        if no_atual.y == goal.y and no_atual.x == goal.x:
+            goal_encontrado = no_atual
+            break
+
+        # Adiciona o nó atual a expandidos
+        expandidos.add(no_atual)
+
+        # Obtem os vizinhos livres
+        vizinhos = celulas_vizinhas_livres(no_atual, labirinto)
+
+        for vizinho in vizinhos:
+            # Calcula o novo custo de cada nó
+            novo_custo = custo_ate_agora[no_atual] + distancia(no_atual, vizinho)
+
+            # Se o vizinho não foi visitado ou um caminho mais curto foi achado
+            if vizinho not in custo_ate_agora or novo_custo < custo_ate_agora[vizinho]:
+                # Update the cost to reach the neighbor
+                custo_ate_agora[vizinho] = novo_custo
+                # Calculate the priority based on the new cost and heuristic
+                prioridade = novo_custo + distancia(vizinho, goal)
+                # Add the neighbor to the frontier with the calculated priority
+                fronteira.append((prioridade, vizinho))
+                # Atualiza o caminho
+                caminho[vizinho] = no_atual
+                
+        #viewer.update(generated=fronteira, expanded=expandidos)
+        #viewer.pause()
+
+    caminho = obtem_caminho(goal_encontrado)
+    custo   = custo_caminho(caminho)
+
+    return caminho, custo, expandidos
 #-------------------------------
 
 
@@ -210,8 +255,8 @@ def main():
     for _ in range(10):
         #SEED = 42  # coloque None no lugar do 42 para deixar aleatorio
         #random.seed(SEED)
-        N_LINHAS  = 10
-        N_COLUNAS = 20
+        N_LINHAS  = 200
+        N_COLUNAS = 200
         INICIO = Celula(y=0, x=0, anterior=None)
         GOAL   = Celula(y=N_LINHAS-1, x=N_COLUNAS-1, anterior=None)
 
@@ -221,10 +266,32 @@ def main():
         em que uma posicao tem 0 se ela eh livre e 1 se ela esta ocupada.
         """
         labirinto = gera_labirinto(N_LINHAS, N_COLUNAS, INICIO, GOAL)
-
+        
+    
         viewer = MazeViewer(labirinto, INICIO, GOAL,
                             step_time_miliseconds=20, zoom=40)
         
+        #----------------------------------------
+        # A-Star Search
+        #----------------------------------------
+        viewer._figname = "A-Star"
+        caminho, custo_total, expandidos = \
+            a_star_search(labirinto, INICIO, GOAL, viewer)
+
+        if len(caminho) == 0:
+            print("Goal é inalcançavel neste labirinto.")
+
+        print(
+            f"A-Star:"
+            f"\tCusto total do caminho: {custo_total}.\n"
+            f"\tNumero de passos: {len(caminho)-1}.\n"
+            f"\tNumero total de nos expandidos: {len(expandidos)}.\n\n"
+
+        ) 
+
+        #viewer.update(path=caminho)
+        #viewer.pause()
+    '''   
         #----------------------------------------
         # BFS Search
         #----------------------------------------
@@ -268,19 +335,11 @@ def main():
         viewer.update(path=caminho)
         viewer.pause()
 
-
-
-
-        #----------------------------------------
-        # A-Star Search
-        #----------------------------------------
-
         #----------------------------------------
         # Uniform Cost Search (Obs: opcional)
-        #----------------------------------------
+        #---------------------------------------- 
 
-
-
+'''
 
     print("OK! Pressione alguma tecla pra finalizar...")
     input()
