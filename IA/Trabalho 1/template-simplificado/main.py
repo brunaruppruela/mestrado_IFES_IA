@@ -137,7 +137,7 @@ def breadth_first_search(labirinto, inicio, goal, viewer):
         expandidos.add(no_atual)
 
         viewer.update(generated=fronteira, expanded=expandidos)
-        viewer.pause()
+        #viewer.pause()
 
 
     caminho = obtem_caminho(goal_encontrado)
@@ -181,7 +181,7 @@ def depth_first_search(labirinto, inicio, goal, viewer):
         expandidos.add(no_atual)
 
         viewer.update(generated=fronteira, expanded=expandidos)
-        viewer.pause()
+        #viewer.pause()
 
 
     caminho = obtem_caminho(goal_encontrado)
@@ -253,10 +253,10 @@ def a_star_search(labirinto, inicio, goal, viewer):
 
 def main():
     for _ in range(10):
-        #SEED = 42  # coloque None no lugar do 42 para deixar aleatorio
+        #SEED = 21  # coloque None no lugar do 42 para deixar aleatorio
         #random.seed(SEED)
-        N_LINHAS  = 200
-        N_COLUNAS = 200
+        N_LINHAS  = 100
+        N_COLUNAS = 100
         INICIO = Celula(y=0, x=0, anterior=None)
         GOAL   = Celula(y=N_LINHAS-1, x=N_COLUNAS-1, anterior=None)
 
@@ -289,9 +289,10 @@ def main():
 
         ) 
 
-        #viewer.update(path=caminho)
+        viewer.update(path=caminho)
         #viewer.pause()
-    '''   
+    
+    
         #----------------------------------------
         # BFS Search
         #----------------------------------------
@@ -311,9 +312,9 @@ def main():
         )
 
         viewer.update(path=caminho)
-        viewer.pause()
-
-
+        #viewer.pause()
+        
+    
         #----------------------------------------
         # DFS Search
         #----------------------------------------
@@ -333,16 +334,15 @@ def main():
         )
 
         viewer.update(path=caminho)
-        viewer.pause()
+        #viewer.pause()
 
         #----------------------------------------
         # Uniform Cost Search (Obs: opcional)
         #---------------------------------------- 
+        
 
-'''
-
-    print("OK! Pressione alguma tecla pra finalizar...")
-    input()
+        print("OK! Pressione alguma tecla pra finalizar...")
+        input()
 
 
 if __name__ == "__main__":
