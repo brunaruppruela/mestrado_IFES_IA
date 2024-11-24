@@ -43,7 +43,7 @@ Começaremos em alguns minutos...
 ---
 # **Exemplo de um Algoritmo de busca:**
 
-Voce busca na internet 10 gols mais bonitos da Copa do Mundo de 2022. Veja como é construído um algoritmo de busca genérico para realizar a sua busca:
+Voce busca na internet os 10 gols mais bonitos da Copa do Mundo de 2022. Veja como é construído um algoritmo de busca genérico para realizar a sua busca:
 
 ```
 NÍCIO
@@ -78,26 +78,29 @@ FIM
 
  <br>
 
-  Em IA, **problemas de busca** envolvem a navegação por um espaço de estados para encontrar um caminho do estado inicial até o estado objetivo.
+  Em IA, **problemas de busca** envolvem a navegação por um espaço de estados para encontrar um caminho do estado inicial até o estado objetivo. Consiste em analisar o **espaço de possibilidades de resolução do problema**, encontrar sequências de ações que levem a um objetivo desejado.
 
 ![w:600 h:500 bg right](labirinto2.png "Jogo do Labirinto")
 
 ---
 
-# **Elementos principais de um problema de busca:**
-<br>
+## **Elementos principais de um problema de busca:**
 
-  - **Estado Inicial**: Ponto de partida da busca.
-  - **Ações**: Movimentos ou decisões possíveis em cada estado.
-  - **Estado Objetivo**: Estado que queremos alcançar.
-  - **Custo do Caminho**: Soma dos custos das ações para chegar ao estado objetivo.
-  
+  - **Estado Inicial**: Ponto de partida da busca: Em(Arad).
+  - **Ações**: Movimentos ou decisões possíveis em cada estado: Ir(Cidade, PróximaCidade).
+  - **Estado Objetivo**: Estado que queremos alcançar: Em(Bucharest)
+  - **Custo do Caminho**: Custo numérico de cada caminho: Distância em KM entre as cidades.
+  - **Espaço de Estados**: Conjunto de estados que podem ser atingidos a partir do
+estado inicial: Mapa da Romênia
+
+![w:700 h:500 bg right](arad.png "Jogo do Labirinto")
+
 ---  
  
 
 ## **Busca Não Informada (Cega)**
 
- A busca nao informada é uma técnica onde o algoritmo explora o espaço de estados sem informações adicionais sobre a proximidade do objetivo. Não utiliza nenhuma heurística para guiar a busca.
+ A busca não informada é uma técnica onde o algoritmo explora o espaço de estados sem informações adicionais sobre a proximidade do objetivo. Não utiliza nenhuma heurística para guiar a busca.
 
 <br>
 
